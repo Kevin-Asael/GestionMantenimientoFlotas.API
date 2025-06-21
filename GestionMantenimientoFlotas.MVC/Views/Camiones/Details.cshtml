@@ -1,0 +1,141 @@
+﻿@model Flotas.Models.Camion
+
+@{
+    ViewData["Title"] = "Detalles del Camión";
+}
+
+<h1>Detalles del Camión</h1>
+
+<div>
+    <h4>Camión</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Marca)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Marca)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Modelo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Modelo)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Anio)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Anio)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Placa)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Placa)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.KilometrajeActual)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.KilometrajeActual)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Estado)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Estado)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ConductorId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Conductor.Nombre)
+        </dd>
+    </dl>
+</div>
+<!-- Botón para generar el PDF y descargarlo -->
+<form method="get" action="@Url.Action("DescargarPdf", "Camiones", new { id = Model.Id })">
+    <button type="submit" class="btn btn-primary">Generar y Descargar PDF</button>
+</form>
+<br />
+<!-- Botón para generar alertas y logs -->
+<form method="post" action="@Url.Action("GenerarAlertasYLogs", "Camiones", new { id = Model.Id })">
+    <button type="submit" class="btn btn-primary">Generar Alertas y Logs</button>
+</form>
+
+<!-- Mostrar las Alertas del Camión -->
+<h3>Alertas del Camión</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Descripción</th>
+            <th>Fecha Generación</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var alerta in Model.Alertas)
+        {
+            <tr>
+                <td>@alerta.Descripcion</td>
+                <td>@alerta.Fecha</td>
+                <td>@(alerta.EstaResuelta ? "Resuelta" : "Pendiente")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Mostrar los Logs del Camión -->
+<h3>Logs del Camión</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Fecha y Hora</th>
+            <th>Kilometraje</th>
+            <th>Estado del Motor</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var log in Model.SensorLogs)
+        {
+            <tr>
+                <td>@log.Timestamp</td>
+                <td>@log.Kilometraje</td>
+                <td>@log.EstadoMotor</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Mostrar los Mantenimientos Programados -->
+<h3>Mantenimientos Programados</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tipo de Mantenimiento</th>
+            <th>Fecha de Mantenimiento</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var mantenimiento in Model.Mantenimientos)
+        {
+            <tr>
+                <td>@mantenimiento.TipoMantenimiento</td>
+                <td>@mantenimiento.Fecha</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Enlaces de navegación -->
+<div>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    <a asp-action="Index">Volver a la lista</a>
+</div>

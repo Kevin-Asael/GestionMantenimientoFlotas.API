@@ -1,0 +1,63 @@
+﻿@model List<Flotas.Models.MantenimientoProgramado>
+
+@{
+    ViewData["Title"] = "Lista de Mantenimientos Programados";
+}
+
+<h1>Lista de Mantenimientos Programados</h1>
+
+<!-- Formulario de búsqueda -->
+<form method="get" asp-action="Index">
+    <div class="form-group">
+        <label for="searchQuery">Buscar por Tipo de Mantenimiento</label>
+        <input type="text" id="searchQuery" name="searchQuery" class="form-control" value="@ViewBag.SearchQuery" />
+    </div>
+
+    <!-- Filtro por Camión -->
+    <div class="form-group">
+        <label for="camionId">Seleccionar Camión</label>
+        <select id="camionId" name="camionId" class="form-control" asp-items="ViewBag.Camiones">
+            <option value="">Seleccione un Camión</option>
+        </select>
+    </div>
+
+    <!-- Filtro por Taller -->
+    <div class="form-group">
+        <label for="tallerId">Seleccionar Taller</label>
+        <select id="tallerId" name="tallerId" class="form-control" asp-items="ViewBag.Talleres">
+            <option value="">Seleccione un Taller</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Buscar</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tipo de Mantenimiento</th>
+            <th>Fecha de Mantenimiento</th>
+            <th>Camión</th>
+            <th>Taller</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var mantenimiento in Model)
+        {
+            <tr>
+                <td>@mantenimiento.TipoMantenimiento</td>
+                <td>@mantenimiento.Fecha</td>
+                <td>@mantenimiento.Camion.Placa</td>
+                <td>@mantenimiento.Taller.Nombre</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Paginación -->
+<div>
+    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+    {
+        <a href="@Url.Action("Index", new { page = i, searchQuery = ViewBag.SearchQuery, camionId = ViewBag.CamionId, tallerId = ViewBag.TallerId })" class="btn btn-link">@i</a>
+    }
+</div>

@@ -1,0 +1,6 @@
+@GestionMantenimientoFlotas.API_HostAddress = http://localhost:5216
+
+GET {{GestionMantenimientoFlotas.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
